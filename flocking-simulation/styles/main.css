@@ -1,0 +1,25 @@
+
+@font-face {
+    font-family: RobotoMono;
+    src: url(fonts/RobotoMono-Light.ttf);
+}
+
+body {
+    margin: 0px;
+}
+
+.popup {
+    font-family: RobotoMono;
+    font-weight: bold;
+    position: fixed;
+    bottom: 0%;
+    background-color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+label {
+    margin-left: 20px;
+    margin-right: 5px;
+}

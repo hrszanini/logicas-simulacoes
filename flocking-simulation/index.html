@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Flocking Simulation</title>
+        <link rel="stylesheet" href="styles/main.css">
+    </head>
+    <body>
+        <div class="popup">
+            <label>Alinhamento</label><input type="range" min="1" max="1000" value="500" id="alignment">
+            <label>Coesão</label><input type="range" min="1" max="1000" value="500" id="cohesion">
+            <label>Separação</label><input type="range" min="1" max="1000" value="500" id="separation">
+            
+            <label>Fundo</label><input type="color" id="background" value="#B1D4E0">
+            <label>Pássaro</label><input type="color" id="bird" value="#0C2D48">
+            <label>Visão Pássaro</label><input type="color" id="vision" value="#B6D9E5">
+
+            <label>Quantidade</label><input type="number" id="birds_number" value="100">
+            <input type="button" onclick="populateFlock();" value="Reiniciar">
+        </div>
+
+        <script src="scripts/draw.js"></script>
+        <script src="scripts/base.js"></script>
+        <script src="scripts/main.js"></script>
+    </body>
+</html>
