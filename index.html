@@ -4,20 +4,56 @@
         <title>Simulações e Lógicas</title>
         <link rel="stylesheet" href="style.css">
     </head>
-    <body>
+    <body class="prevent-select">
         <main>
-            <button onclick="location = './flocking-simulation/index.html'">
-                SIMULACAO DE BANDO
-            </button>
-            <button onclick="location = './game-of-life/index.html'">
-                JOGO DA VIDA
-            </button>
-            <button onclick="location = './quadtree/index.html'">
-                ARVORE QUADRATICA
-            </button>
+            <section class="buttons">
+                <button onclick="setScreen('./flocking-simulation/index.html')">
+                    SIMULACAO DE BANDO
+                </button>
+                <button onclick="setScreen('./game-of-life/index.html')">
+                    JOGO DA VIDA
+                </button>
+                <button onclick="setScreen('./quadtree/index.html')">
+                    ARVORE QUADRATICA
+                </button>
+            </section>
+            <section class="screen" id="screen"></section>
         </main>
         <footer>
             DESENVOLVIDO POR HAMILTON ZANINI
         </footer>
     </body>
+    <script>
+        var currentScreen = "";
+
+        function setScreen(url){
+            let screen = document.getElementById("screen");
+
+            screen.innerHTML = "";
+            
+            if(currentScreen == url) {
+                currentScreen = "";
+                screen.style.width = "0%";
+                screen.style.height = "0%";
+            } else {
+                screen.style.width = "0%";
+                currentScreen = url;
+                setTimeout(() => {loadScreen(screen)}, 1000);
+            }
+        }
+
+        function loadScreen(screen){
+            screen.style.height = "100%";
+            screen.style.width = "100%";
+
+            let iframe = document.createElement("iframe");
+            iframe.scrolling = "no";
+            
+            screen.innerHTML = "";
+            screen.appendChild(iframe);
+
+            setTimeout(() => {iframe.src = currentScreen}, 1000);
+        }
+
+    </script>
 </html>
