@@ -30,15 +30,22 @@
             let screen = document.getElementById("screen");
 
             screen.innerHTML = "";
-            
-            if(currentScreen == url) {
+
+            if(currentScreen == ""){
+                currentScreen = url;
+                loadScreen(screen);
+                return;
+            }
+
+            if(currentScreen != url) {
+                currentScreen = url;
+                screen.style.width = "0%";
+                setTimeout(() => {loadScreen(screen)}, 1000);
+            } else {
                 currentScreen = "";
                 screen.style.width = "0%";
                 screen.style.height = "0%";
-            } else {
-                screen.style.width = "0%";
-                currentScreen = url;
-                setTimeout(() => {loadScreen(screen)}, 1000);
+                return;
             }
         }
 
