@@ -1,0 +1,63 @@
+/* Paleta de cores: #C6878F #B79D94 #969696 #67697C #253D5B */
+:root {
+    --green: #04F404;
+    --black: #000000;
+}
+
+@font-face {
+    font-family: zig;
+    src: url(zig.regular.ttf);
+}
+
+* {
+    font-family: zig;
+    font-weight: bold;
+}
+
+body {
+    background-color: var(--black);
+    color: var(--green);
+
+    display: grid;
+    grid-template-rows: 19fr 1fr;
+
+    padding: 0;
+    margin: 0;
+
+
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+footer {
+    padding-top: 10px;
+    text-align: center;
+
+    font-size: small;
+}
+
+main button {
+    background-color: var(--black);
+    color: var(--green);
+
+    font-weight: bold;
+
+    width: 200px;
+    height: 50px;
+
+    border-style: solid;
+    border-color: var(--green);
+}
+
+main button:hover {
+    background-color: var(--green);
+    color: var(--black);
+
+    
+}
