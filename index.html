@@ -17,10 +17,13 @@
                     ARVORE QUADRATICA
                 </button>
             </section>
-            <section class="screen" id="screen"></section>
+            <section class="screen" id="screen">
+            </section>
         </main>
         <footer>
-            DESENVOLVIDO POR HAMILTON ZANINI
+            <a href="https://github.com/hrszanini/logicas-simulacoes" target="_blank">
+                DESENVOLVIDO POR HAMILTON ZANINI
+            </a>
         </footer>
     </body>
     <script>
@@ -28,8 +31,6 @@
 
         function setScreen(url){
             let screen = document.getElementById("screen");
-
-            screen.innerHTML = "";
 
             if(currentScreen == ""){
                 currentScreen = url;
@@ -50,17 +51,17 @@
         }
 
         function loadScreen(screen){
+            
             screen.style.height = "100%";
             screen.style.width = "100%";
-
-            let iframe = document.createElement("iframe");
-            iframe.scrolling = "no";
             
-            screen.innerHTML = "";
-            screen.appendChild(iframe);
-
-            setTimeout(() => {iframe.src = currentScreen}, 1000);
+            setTimeout(() => {
+                screen.innerHTML = "";
+                let iframe = document.createElement("iframe");
+                iframe.scrolling = "no";
+                screen.appendChild(iframe);
+                iframe.src = currentScreen
+            }, 1000);
         }
-
     </script>
 </html>
