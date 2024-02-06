@@ -1,7 +1,17 @@
-
 @font-face {
-    font-family: RobotoMono;
     src: url(fonts/RobotoMono-Light.ttf);
+    font-family: RobotoMono;
+}
+
+:root {
+	--popup-color: #fbfbfe;
+	--font-color: #050316;
+	--primary-color: #2f27ce;
+	--secondary-color: #dddbff;
+	--accent: #443dff;
+    
+	font-family: RobotoMono;
+	font-weight: 600;
 }
 
 body {
@@ -9,17 +19,32 @@ body {
 }
 
 .popup {
-    font-family: RobotoMono;
-    font-weight: bold;
-    position: fixed;
-    bottom: 0%;
-    background-color: white;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 5px;
+    background-color: var(--popup-color);
+	color: var(--font-color);
+    
+	position: fixed;
+	z-index: 100;
+    border-radius: 0px 50px 0px 0px;
+	padding: 10px;
+	bottom: 0%;
+	
+	display: inline-grid;
+	grid-template-columns: 1fr 1fr 1fr;
 }
 
-label {
-    margin-left: 20px;
-    margin-right: 5px;
+.item {
+	padding: 5px;
+	justify-self: stretch;
+
+	display: grid-inline;
+}
+
+button {
+	width: 100%;
+}
+
+canvas {
+	position: fixed;
+	top: 0px;
+	left: 0px;
 }

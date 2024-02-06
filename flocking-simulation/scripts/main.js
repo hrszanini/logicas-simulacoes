@@ -1,11 +1,20 @@
-var NUMBER_OF_BIRDS = 100, MAX_VELOCITY = 5, CHECK_RADIUS = 500, COHESION_FORCE, ALIGN_FORCE, SEPARATE_FORCE;
+var NUMBER_OF_BIRDS = 100, 
+	MAX_VELOCITY = 5, 
+	CHECK_RADIUS = 50, 
+	COHESION_FORCE, 
+	ALIGN_FORCE, 
+	SEPARATE_FORCE;
 
 var flock = [];
 
 function populateFlock(){
     let newFlock = [];
+	let id = 0;
+
     for(let i=0; i < NUMBER_OF_BIRDS; i++){
-        newFlock.push(new Bird(CHECK_RADIUS).random(0, 0, WIDTH, HEIGHT, 1));
+        newFlock.push(
+			new Bird(++id).random(0, 0, WIDTH, HEIGHT, 1)
+		);
     }
 
     flock = newFlock;
@@ -17,7 +26,9 @@ function updateFlock(){
     COHESION_FORCE = document.getElementById("cohesion").value;
     ALIGN_FORCE = document.getElementById("alignment").value;
     SEPARATE_FORCE = document.getElementById("separation").value;
-    NUMBER_OF_BIRDS = document.getElementById("birds_number").value;
+    
+	CHECK_RADIUS = document.getElementById("check_radius").value;
+	NUMBER_OF_BIRDS = document.getElementById("birds_number").value;
 
     colors.bird = document.getElementById("bird").value;
     colors.background = document.getElementById("background").value;
@@ -36,8 +47,9 @@ function updateFlock(){
 
 function deepCopy(birdList){
     let newBirdList = [];
+	let id = 0;
     for(let bird of birdList){
-        let newBird = new Bird(CHECK_RADIUS);
+        let newBird = new Bird(++id);
 
         newBird.position = new Vector2D(bird.position.x, bird.position.y);
         newBird.velocity = new Vector2D(bird.velocity.x, bird.velocity.y);

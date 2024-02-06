@@ -2,6 +2,7 @@ class Vector2D{
     constructor(x, y){
         if(x == undefined)
             x = 0;
+
         if(y == undefined)
             y = 0;
         
@@ -11,56 +12,69 @@ class Vector2D{
         return this;
     };
 
-    add(other){
-        this.x += other.x;
-        this.y += other.y;
-        return this;
+    add(vector, other){
+		if(other == undefined){
+			this.x += vector.x;
+			this.y += vector.y;
+			return this;
+		}
+		
+		return new Vector2D(
+			vector.x + other.x, 
+			vector.y + other.y);
+		
     }
 
-    addStatic(){
-        return new Vector2D(vector.x + other.x, vector.y + other.y);
+    sub(vector, other){
+		if(other == undefined){
+			this.x -= vector.x;
+			this.y -= vector.y;
+			return this;
+		}
+
+		return new Vector2D(
+			vector.x - other.x, 
+			vector.y - other.y);
     }
 
-    sub(other){
-        this.x -= other.x;
-        this.y -= other.y;
-        return this;
+    mult(param, value){
+		if(value == undefined){
+			this.x *= param;
+			this.y *= param;
+			return this;
+		}
+		
+		return new Vector2D(
+			param.x * value, 
+			param.y * value);
     }
 
-    subStatic(vector, other){
-        return new Vector2D(vector.x - other.x, vector.y - other.y);
-    }
-
-    mult(value){
-        this.x *= value;
-        this.y *= value;
-        return this;
-    }
-
-    multStatic(vector, value){
-        return new Vector2D(vector.x * value, vector.y * value);
-    }
-
-    div(value){
-        this.x /= value;
-        this.y /= value;
-        return this;
-    }
-
-    divStatic(vector, value){
-        return new Vector2D(vector.x / value, vector.y / value);
+    div(param, value){
+		if(value == undefined){
+			this.x /= param;
+			this.y /= param;
+			return this;
+		}
+		
+		return new Vector2D(
+			param.x / value, 
+			param.y / value);
     }
 
     distanceOf(other){
-        return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
+        return Math.sqrt(
+			Math.pow(this.x - other.x, 2) + 
+			Math.pow(this.y - other.y, 2));
     }
 
-    getMagntude(){
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+    getMagnitude(){
+        return Math.sqrt(
+			Math.pow(this.x, 2) + 
+			Math.pow(this.y, 2));
     }
 
-    setMagntude(value){
-        let adjust = this.getMagntude() / value;
+    setMagnitude(value){
+        let adjust = this.getMagnitude() / value;
 
         if(adjust != 0) {
             this.x /= adjust;
@@ -71,8 +85,12 @@ class Vector2D{
     }
 
     getDirection(){
-        let magntude = this.getMagntude();
-        return new Vector2D(this.x / magntude, this.y / magntude);
+        let magnitude = this.getMagnitude();
+
+        return new Vector2D(
+			this.x / magnitude, 
+			this.y / magnitude
+		);
     }
 
     cycle(xMin, yMin, xMax, yMax){
@@ -91,7 +109,7 @@ class Vector2D{
         if(value == undefined)
             value = 1;
 
-        let adjust = this.getMagntude() / value;
+        let adjust = this.getMagnitude() / value;
 
         if(adjust > 1){
             this.x /= adjust;
@@ -103,14 +121,11 @@ class Vector2D{
 }
 
 class Bird{
-    constructor(radiusCheck){
-        if(radiusCheck == undefined)
-            radiusCheck = 0;
-
+    constructor(id){
+		this.id = id;
         this.position = new Vector2D();
         this.velocity = new Vector2D();
         this.acceleration = new Vector2D();
-        this.radiusCheck = radiusCheck;
     }
 
     flocking(birds){
@@ -120,45 +135,61 @@ class Bird{
         let steeringSeparate = new Vector2D();
 
         for(let bird of birds){
-            if(bird != this && this.position.distanceOf(bird.position) <= this.radiusCheck){
+			if(bird.id == this.id){
+				continue;
+			}
+			
+			let distance = this.position.distanceOf(bird.position);
+            
+			if(distance <= CHECK_RADIUS){
                 birdsInRadius++;
 
                 steeringAlign.add(bird.velocity);
                 steeringCoherce.add(bird.position);
-                steeringSeparate.add(new Vector2D().subStatic(this.position, bird.position));
+				
+				if(distance == 0)
+					steeringSeparate.add(new Vector2D(MAX_VELOCITY, MAX_VELOCITY));
+				else
+					steeringSeparate.add(
+						new Vector2D()
+						.sub(this.position, bird.position)
+						.div(distance)
+					);
             }
         }
 
         if(birdsInRadius > 0){
             steeringAlign.div(birdsInRadius);
-            steeringAlign.setMagntude(MAX_VELOCITY);
+            steeringAlign.setMagnitude(MAX_VELOCITY);
             steeringAlign.sub(this.velocity);
-            steeringAlign.mult(ALIGN_FORCE/1000);
+            steeringAlign.mult(ALIGN_FORCE);
 
-            steeringSeparate.div(birdsInRadius)
-            steeringSeparate.setMagntude(MAX_VELOCITY);
+            steeringSeparate.div(birdsInRadius);
+            steeringSeparate.setMagnitude(MAX_VELOCITY);
             steeringSeparate.sub(this.velocity);
-            steeringSeparate.mult(SEPARATE_FORCE/1000);
+            steeringSeparate.mult(SEPARATE_FORCE);
 
             steeringCoherce.div(birdsInRadius);
             steeringCoherce.sub(this.position);
-            steeringCoherce.setMagntude(MAX_VELOCITY);
+            steeringCoherce.setMagnitude(MAX_VELOCITY);
             steeringCoherce.sub(this.velocity);
-            steeringCoherce.mult(COHESION_FORCE/1000);
+            steeringCoherce.mult(COHESION_FORCE);
         }
 
-        this.acceleration = steeringAlign.add(steeringSeparate).add(steeringCoherce);
-
+        this.acceleration = steeringAlign
+							.add(steeringSeparate)
+							.add(steeringCoherce)
+							.limit(1/60);
     }
 
     update(birds){
-        this.acceleration = new Vector2D();
-
-        this.flocking(birds)
-
-        this.velocity.add(this.acceleration);
-        this.position.add(this.velocity.limit(MAX_VELOCITY));
-        return this;
+        this.flocking(birds);
+        
+		this.velocity.add(this.acceleration);
+        this.velocity.limit(MAX_VELOCITY);
+		this.position.add(this.velocity);
+        
+		return this;
     }
 
     random(minX, minY, maxX, maxY, maxV){
@@ -168,7 +199,9 @@ class Bird{
 
         let randomVX = (Math.random() * 2) -1;
         let randomVY = (Math.random() * 2) -1;
-        this.velocity = new Vector2D(randomVX * maxV, randomVY * maxV);
+        this.velocity = new Vector2D(
+						randomVX * maxV, 
+						randomVY * maxV);
         return this;
     }
 
