@@ -126,69 +126,71 @@ class Bird{
         this.position = new Vector2D();
         this.velocity = new Vector2D();
         this.acceleration = new Vector2D();
+		this.flock = [];
     }
 
-    flocking(birds){
-        let birdsInRadius = 0; 
-        let steeringAlign = new Vector2D();
-        let steeringCoherce = new Vector2D();
-        let steeringSeparate = new Vector2D();
+    fly(birds){
+        let accelerationAlign = new Vector2D();
+        let accelerationCoherce = new Vector2D();
+        let accelerationSeparate = new Vector2D();
 
-        for(let bird of birds){
-			if(bird.id == this.id){
-				continue;
-			}
-			
+        for(let pos = this.id; pos < birds.length; pos++){
+			let bird = birds[pos];
+
 			let distance = this.position.distanceOf(bird.position);
             
-			if(distance <= CHECK_RADIUS){
-                birdsInRadius++;
+			if(distance > CHECK_RADIUS)
+				continue;
+			
+			this.flock.push(bird);
+			bird.flock.push(this);
+		}
 
-                steeringAlign.add(bird.velocity);
-                steeringCoherce.add(bird.position);
-				
-				if(distance == 0)
-					steeringSeparate.add(new Vector2D(MAX_VELOCITY, MAX_VELOCITY));
-				else
-					steeringSeparate.add(
-						new Vector2D()
-						.sub(this.position, bird.position)
-						.div(distance)
-					);
-            }
+		if(this.flock.length == 0)
+			return;
+		else
+			this.acceleration = new Vector2D();
+		
+		for(let bird of this.flock){
+			accelerationAlign.add(bird.velocity);
+
+			accelerationCoherce.add(bird.position);
+			
+			let distance = this.position.distanceOf(bird.position);
+			
+			if(distance == 0)
+				accelerationSeparate.add(new Vector2D(MAX_ACCELERATION, MAX_ACCELERATION));
+			else
+				accelerationSeparate.add(
+					new Vector2D()
+					.sub(this.position, bird.position)
+					.div(distance)
+				);
         }
 
-        if(birdsInRadius > 0){
-            steeringAlign.div(birdsInRadius);
-            steeringAlign.setMagnitude(MAX_VELOCITY);
-            steeringAlign.sub(this.velocity);
-            steeringAlign.mult(ALIGN_FORCE);
+		accelerationCoherce.div(this.flock.length);
+		accelerationCoherce.sub(this.position);
+		accelerationCoherce.setMagnitude(MAX_ACCELERATION);
+		accelerationCoherce.mult(COHESION_RATIO);
+		this.acceleration.add(accelerationCoherce);
+		
+		accelerationAlign.setMagnitude(MAX_ACCELERATION);
+		accelerationAlign.mult(ALIGN_RATIO);
+		this.acceleration.add(accelerationAlign);
 
-            steeringSeparate.div(birdsInRadius);
-            steeringSeparate.setMagnitude(MAX_VELOCITY);
-            steeringSeparate.sub(this.velocity);
-            steeringSeparate.mult(SEPARATE_FORCE);
-
-            steeringCoherce.div(birdsInRadius);
-            steeringCoherce.sub(this.position);
-            steeringCoherce.setMagnitude(MAX_VELOCITY);
-            steeringCoherce.sub(this.velocity);
-            steeringCoherce.mult(COHESION_FORCE);
-        }
-
-        this.acceleration = steeringAlign
-							.add(steeringSeparate)
-							.add(steeringCoherce)
-							.limit(1/60);
+		accelerationSeparate.setMagnitude(MAX_ACCELERATION);
+		accelerationSeparate.mult(SEPARATE_RATIO);
+		this.acceleration.add(accelerationSeparate);
     }
 
     update(birds){
-        this.flocking(birds);
+        this.fly(birds);
         
 		this.velocity.add(this.acceleration);
         this.velocity.limit(MAX_VELOCITY);
 		this.position.add(this.velocity);
-        
+		this.flock = [];
+
 		return this;
     }
 

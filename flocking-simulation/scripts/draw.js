@@ -1,7 +1,8 @@
 var HEIGHT = window.innerHeight, 
 	WIDTH = window.innerWidth, 
 	FPS = 60, 
-	SCREEN_ID = "screen";
+	SCREEN_ID = "screen",
+	BACKGROUND_ID = "background";
 
 var colors = {
     background: "#B1D4E0",
@@ -9,18 +10,17 @@ var colors = {
     birdCheck: "#B6D9E5" 
 };
 
-var canvas, canvas_bg, ctx_bg, ctx;
+var ctx_bg, ctx;
 
 function initialize(){
 	let background =  document.createElement("canvas");
-    background.id = SCREEN_ID + "_bg";
+    background.id = BACKGROUND_ID;
     background.width = WIDTH;
     background.height = HEIGHT;
 
     document.body.appendChild(background);
 
-    canvas_bg = background;
-    ctx_bg = canvas_bg.getContext("2d");
+    ctx_bg = background.getContext("2d");
     
 	let screen =  document.createElement("canvas");
     screen.id = SCREEN_ID;
@@ -29,8 +29,7 @@ function initialize(){
 
     document.body.appendChild(screen);
 
-    canvas = screen;
-    ctx = canvas.getContext("2d");
+    ctx = screen.getContext("2d");
 }
 
 function clearScreen(){
@@ -42,7 +41,7 @@ function clearScreen(){
 }
 
 function draw_bird(x, y, radiusCheck, direction){
-    ctx_bg.strokeStyle = colors.birdCheck;
+    ctx_bg.fillStyle = colors.birdCheck;
 	ctx_bg.beginPath();
 	ctx_bg.arc(
 		x, 
@@ -50,17 +49,17 @@ function draw_bird(x, y, radiusCheck, direction){
 		CHECK_RADIUS, 
 		0, 
 		2 * Math.PI);
-	ctx_bg.stroke();
+	ctx_bg.fill();
 
     ctx.fillStyle = colors.bird;
 	ctx.beginPath();
 	direction.mult(10);
 	ctx.moveTo(x + direction.x, y + direction.y);
-	direction.div(2);
+	direction.div(3);
 	ctx.lineTo(x + direction.y, y - direction.x);
 	ctx.lineTo(x - direction.y, y + direction.x);
 	ctx.closePath();
-	ctx.fill();
+	ctx.stroke();
 }
 
 function draw(birds){

@@ -22,25 +22,65 @@ body {
     background-color: var(--popup-color);
 	color: var(--font-color);
     
+
 	position: fixed;
 	z-index: 100;
-    border-radius: 0px 50px 0px 0px;
-	padding: 10px;
-	bottom: 0%;
+    
+	border-radius: 25px;
+	box-shadow: -20px 20px 5px #20202020;
+
+	padding: 15px;
+	padding-top: 10px;
 	
-	display: inline-grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	top: 10px;
+	right: 10px;
+	
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	align-items: center;
 }
 
-.item {
-	padding: 5px;
-	justify-self: stretch;
+.selector {
+	padding: 10px;
+	width: 90%
+}
 
-	display: grid-inline;
+.selector.range {
+	text-align: left;
+
+	display: grid;
+	grid-template-columns: 10fr 1fr;
+}
+
+.selector.range:nth-child(4) {
+	text-align: right;
+}
+
+.selector.color {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+.selector.title {
+	text-align: center;
+}
+
+.selector.number {
+	text-align: right;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.selector.button {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 button {
-	width: 100%;
 }
 
 canvas {

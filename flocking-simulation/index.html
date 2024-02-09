@@ -7,39 +7,50 @@
     </head>
     <body>
         <div class="popup">
-			<div class="item">
+			<div class="selector title">
+				<label>Configurações</label>
+			</div>
+			<div class="selector color">
 				<label>Fundo</label>
-				<input type="color" id="background" value="#3a31d8">
+				<input type="color" id="background-color" value="#3a31d8">
 			</div>
-			<div class="item">
+			<div class="selector color">
 				<label>Pássaro</label>
-				<input type="color" id="bird" value="#020024">
+				<input type="color" id="bird-color" value="#020024">
 			</div>
-			<div class="item">
+			<div class="selector color">
 				<label>Visão</label>
-				<input type="color" id="vision" value="#0600c2">
+				<input type="color" id="vision-color" value="#0600c2">
 			</div>
-			<div class="item">
+			<div class="selector range">
 				<label>Alinhamento</label>
-				<input type="range" min="1" max="1000" value="500" id="alignment">
+				<input type="checkbox" checked id="alignment-active" >
+				<input type="range" min="0" max="500" value="100" id="alignment">
+				<label id="alignment-label">100</label>
 			</div>
-			<div class="item">
+			<div class="selector range">
 				<label>Coesão</label>
-				<input type="range" min="1" max="1000" value="500" id="cohesion">
+				<input type="checkbox" checked id="cohesion-active">
+				<input type="range" min="0" max="500" value="100" id="cohesion">
+				<label id="cohesion-label">100</label>
 			</div>
-			<div class="item">
+			<div class="selector range">
 				<label>Separação</label>
-				<input type="range" min="1" max="1000" value="500" id="separation">
+				<input type="checkbox" checked id="separation-active">
+				<input type="range" min="0" max="500" value="100" id="separation">
+				<label id="separation-label">100</label>
 			</div>
-			<div class="item">
-				<label>Quantidade</label>
-				<input type="number" id="birds_number" value="100">
-			</div>
-			<div class="item">
+			<div class="selector range">
 				<label>Raio de Visão</label>
-				<input type="range" min="1" max="500" value="50" id="check_radius">
+				<input type="checkbox" checked id="vision-active">
+				<input type="range" min="0" max="500" value="50" id="vision">
+				<label id="vision-label">50</label>
 			</div>
-			<div class="item">
+			<div class="selector number">
+				<label>Quantidade</label>
+				<input type="number" id="birds-number" value="100">
+			</div>
+			<div class="selector button">
 				<button type="button" onclick="populateFlock();"> Reiniciar </button>
 			</div>
 		</div>
